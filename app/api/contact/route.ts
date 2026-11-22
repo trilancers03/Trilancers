@@ -8,16 +8,20 @@ export async function POST(request: Request) {
     return Response.json({ error: 'Please check your details and complete the hCaptcha challenge.' }, { status: 400 });
   }
   const secret = process.env.HCAPTCHA_SECRET;
-  const webhook = process.env.CONTACT_WEBHOOK_URL;
-  if (!secret || !webhook) return Response.json({ error: 'The contact form is temporarily unavailable. Please try again later.' }, { status: 503 });
+  const supabaseUrl = process.env.SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_SECRET_KEY;
+  if (!secret || !supabaseUrl || !supabaseKey) return Response.json({ error: 'The contact form is temporarily unavailable. Please try again later.' }, { status: 503 });
   try {
     const verification = await fetch('https://api.hcaptcha.com/siteverify', { method: 'POST', body: new URLSearchParams({ secret, sitekey, response: data.token }), signal: AbortSignal.timeout(10000) });
     const result = await verification.json();
     if (!verification.ok || result.success !== true) return Response.json({ error: 'Verification failed. Please complete the challenge again.' }, { status: 400 });
-    const delivery = await fetch(webhook, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: data.name.trim(), phone: data.phone.trim(), service: data.service, message: data.message.trim() }), signal: AbortSignal.timeout(10000) });
-    if (!delivery.ok) throw new Error('Delivery failed');
+    const supabase = createClient(supabaseUrl, supabaseKey, { auth: { persistSession: false, autoRefreshToken: false } });
+    const { error } = await supabase.from('contact_submissions').insert({ name: data.name.trim(), phone: data.phone.trim(), service: data.service, message: data.message.trim() || null });
+    if (error) throw error;
     return Response.json({ success: true });
   } catch {
     return Response.json({ error: 'Unable to send your message. Please try again later.' }, { status: 502 });
   }
 }
+import { createClient } from '@supabase/supabase-js';
+
