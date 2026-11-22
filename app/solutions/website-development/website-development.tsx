@@ -1,0 +1,3 @@
+"use client";
+import InnerPage from '../../inner-page';
+export default function WebsiteDevelopment() { return <InnerPage label="WEBSITE DEVELOPMENT" title="A better home" accent="for your ideas." description="Your website is where your story comes to life. We create responsive digital experiences designed to engage visitors and support your goals." items={[{title:'Plan with purpose',text:'Start with your audience, business goals, and the journey your visitors need.'},{title:'Design for people',text:'Create an intuitive experience that feels consistent across screens.'},{title:'Build for the future',text:'Develop a responsive foundation that can grow alongside your business.'}]}/>; }

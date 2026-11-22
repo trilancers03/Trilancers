@@ -1,0 +1,3 @@
+"use client";
+import InnerPage from '../../inner-page';
+export default function SEO() { return <InnerPage label="SEARCH ENGINE OPTIMISATION" title="Be there when" accent="they search." description="Build a stronger search presence with a thoughtful approach to your website, content, and the questions your audience is asking." items={[{title:'Understand search intent',text:'Explore the topics and queries relevant to your audience.'},{title:'Improve the foundations',text:'Make your pages easier to navigate and understand for people and search engines.'},{title:'Create useful content',text:'Connect your expertise with the information your audience is looking for.'}]}/>; }

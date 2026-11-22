@@ -1,0 +1,3 @@
+"use client";
+import InnerPage from '../inner-page';
+export default function About() { return <InnerPage label="ABOUT TRILANCERS" title="Curiosity first." accent="Impact always." description="Trilancers brings creative thinking and technology together to help ambitious ideas take shape online." items={[{title:'Listen closely',text:'Every project starts with understanding the people and goals behind it.'},{title:'Think creatively',text:'We connect strategy, words, design, and technology to create purposeful work.'},{title:'Build with intention',text:'We focus on digital experiences that are clear, useful, and ready to grow.'}]}/>; }

@@ -1,0 +1,3 @@
+"use client";
+import InnerPage from '../../inner-page';
+export default function ContentWriting() { return <InnerPage label="CONTENT WRITING" title="Make every" accent="word matter." description="The right words can turn an introduction into a connection. We shape clear content that reflects your voice and speaks to your audience." items={[{title:'Find your voice',text:'Define a tone and message that feels true to your business.'},{title:'Tell your story',text:'Bring clarity and personality to your website and brand communications.'},{title:'Keep people engaged',text:'Develop useful content that answers questions and inspires action.'}]}/>; }

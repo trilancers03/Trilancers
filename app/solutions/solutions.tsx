@@ -1,0 +1,3 @@
+"use client";
+import InnerPage from '../inner-page';
+export default function Solutions() { return <InnerPage label="OUR SOLUTIONS" title="Built to move" accent="your business forward." description="From the first impression to the words and search strategy behind it, we bring your digital presence together." items={[{title:'Website Development',text:'Responsive, purposeful websites designed around your goals.',href:'/solutions/website-development'},{title:'Content Writing',text:'Clear, engaging content that gives your ideas a voice.',href:'/solutions/content-writing'},{title:'SEO',text:'A considered approach to making your business easier to find.',href:'/solutions/seo'}]}/>; }
