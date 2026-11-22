@@ -125,3 +125,24 @@ export async function assignTask(formData: FormData) {
   revalidatePath('/admin/tasks');
   redirect(`/admin/tasks?saved=1${view}&page=${page}`);
 }
+
+export async function editTask(formData: FormData) {
+  const taskId = String(formData.get('id') || '');
+  const title = String(formData.get('title') || '').trim();
+  const details = String(formData.get('details') || '').trim();
+  const dueDate = String(formData.get('due_date') || '');
+  const view = formData.get('view') === 'table' ? '&view=table' : '';
+  const page = Math.max(1, Math.min(10000, Number.parseInt(String(formData.get('page') || '1'), 10) || 1));
+  const date = dueDate ? new Date(`${dueDate}T00:00:00Z`) : null;
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(taskId) || !title || title.length > 160 || details.length > 2000 || (dueDate && (!/^\d{4}-\d{2}-\d{2}$/.test(dueDate) || !date || Number.isNaN(date.valueOf()) || date.toISOString().slice(0, 10) !== dueDate))) redirect(`/admin/tasks?error=invalid${view}&page=${page}`);
+  const client = await adminClient();
+  const { data: { user } } = await client.auth.getUser();
+  if (!user) redirect('/admin');
+  const { data: member } = await client.from('erp_members').select('role').eq('user_id', user.id).eq('active', true).maybeSingle();
+  if (!member || !['founder', 'admin'].includes(member.role)) throw new Error('Access denied');
+  const { error } = await client.rpc('erp_edit_general_task', { p_task_id: taskId, p_title: title, p_due_date: dueDate || null, p_details: details || null });
+  if (error) redirect(`/admin/tasks?error=save${view}&page=${page}`);
+  revalidatePath('/admin/tasks');
+  revalidatePath('/admin');
+  redirect(`/admin/tasks?saved=1${view}&page=${page}`);
+}
